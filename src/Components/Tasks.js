@@ -5,14 +5,15 @@ const Tasks = () => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const task = e.target.task.value
-        console.log(task);
-        await axios.post('http://localhost:4000/task', {task})
-        .then(data => {
-            if (data.status === 200) {
-                e.target.reset()
-            }
-        })
+        const task = e.target.task.value 
+        if(task.length > 0) {
+            await axios.post('https://todotasklistapi.herokuapp.com/task', {task})
+            .then(data => {
+                if (data.status === 200) {
+                    e.target.reset()
+                }
+            })
+        }
 
     }
 
