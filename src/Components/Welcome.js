@@ -4,7 +4,6 @@ import auth from '../firebase.init';
 
 const Welcome = () => {
     const [user] = useAuthState(auth)
-    console.log(user);
     const {displayName} = user
 
     return (

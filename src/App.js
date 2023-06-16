@@ -11,6 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "./firebase.init";
 import MyProfile from "./Components/Profile/MyProfile";
 import NotFound from "./Components/Shared/NotFound";
+import UseAuth from "./Components/Shared/UseAuth";
 
 function App() {
   const [user] = useAuthState(auth)
@@ -28,7 +29,7 @@ function App() {
         <Route path="/cal" element={<Calender/>} />
         <Route path='/registration' element={<Reg/>} />
         <Route path='/login' element={<Login/>} />
-        <Route path='/profile' element={<MyProfile/>} />
+        <Route path='/profile' element={<UseAuth><MyProfile/></UseAuth>} />
       </Routes>
       <Footer/>
     </div>

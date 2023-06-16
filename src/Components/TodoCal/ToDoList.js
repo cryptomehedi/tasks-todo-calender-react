@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { PencilAltIcon } from '@heroicons/react/solid'
+import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { useQuery } from 'react-query'
 import Spinner from '../Shared/Spinner';
 
@@ -123,6 +123,9 @@ const To_Do_List = () => {
                                                     <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                                         Task
                                                     </th> 
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Delete
+                                                    </th> 
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -133,6 +136,9 @@ const To_Do_List = () => {
                                                     <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
                                                         {task.task}
                                                     </td> 
+                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                        <TrashIcon onClick={()=>setTaskEdit(task)} className="h-5 w-5 text-red-300 hover:text-red-500"/>
+                                                    </td>
                                                 </tr>)
                                                 }
                                             </tbody>
