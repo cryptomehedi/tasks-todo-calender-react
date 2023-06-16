@@ -9,6 +9,8 @@ import Reg from './Components/LoginRed/Reg';
 import Welcome from "./Components/Welcome";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "./firebase.init";
+import MyProfile from "./Components/Profile/MyProfile";
+import NotFound from "./Components/Shared/NotFound";
 
 function App() {
   const [user] = useAuthState(auth)
@@ -20,11 +22,13 @@ function App() {
         user ? <Welcome/> : <></>
       }
       <Routes>
+        <Route path="*" element={<NotFound/>} />
         <Route path="/" element={<Tasks/>} />
         <Route path="/todo" element={<To_Do_List/>} />
         <Route path="/cal" element={<Calender/>} />
         <Route path='/registration' element={<Reg/>} />
         <Route path='/login' element={<Login/>} />
+        <Route path='/profile' element={<MyProfile/>} />
       </Routes>
       <Footer/>
     </div>

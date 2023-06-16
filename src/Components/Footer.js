@@ -92,8 +92,8 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="text-center p-6 bg-gray-200">
-                    <span> &copy; {new Date().getFullYear()} Copyright </span>
-                    <a className="text-gray-600 font-semibold" href="https://cryptomehedi.com/">Crypto Mehedi</a>
+                    Copyright &copy; 2021 - {new Date().getFullYear()}
+                    <a className="text-gray-600 font-semibold" href="https://cryptomehedi.com/">Crypto Mehedi</a> || All Rights Reserved
                 </div>
             </footer>
         </div>
