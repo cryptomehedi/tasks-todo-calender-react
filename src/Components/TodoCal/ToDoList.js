@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { PencilAltIcon } from '@heroicons/react/solid'
 import { useQuery } from 'react-query'
+import Spinner from '../Shared/Spinner';
 
 const To_Do_List = () => {
 
     // const [tasks, setTasks] = useState([])
     const [taskEdit, setTaskEdit] = useState({}) 
+    const [errorMessage, setErrorMessage] = useState(false) 
 
     const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://tasks-todo-calender.vercel.app/task'))
 
@@ -15,12 +17,17 @@ const To_Do_List = () => {
         e.preventDefault()
         const id = taskEdit._id
         const task = e.target.task.value 
-        await axios.put(`https://tasks-todo-calender.vercel.app/task/${id}`, {task})
-        e.target.reset()
-        setTaskEdit('')
-        refetch()
+        if(task.length > 0) {
+            await axios.put(`https://tasks-todo-calender.vercel.app/task/${id}`, {task})
+            e.target.reset()
+            setTaskEdit('')
+            refetch()
+            setErrorMessage(false)
+        } else {
+            setErrorMessage(true)
+        }
+        
     }
-// console.log(checked);
 
     const handelChecked = async id =>{ 
         const status = 1
@@ -29,18 +36,32 @@ const To_Do_List = () => {
         refetch()
     }
 
-
     return (
         <div className=''>
-            <div className='flex justify-center py-2'>
-                <form className='flex justify-center' onSubmit={handleSubmit}> 
-                    <input disabled={taskEdit?.task ? false : true}  defaultValue={taskEdit?.task} className={`form-control w-60 mr-5 block px-3  py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none ${taskEdit.task ? '' : 'disabled:cursor-not-allowed'}`} type="text" name="task" id="task" />
-                    <input disabled={taskEdit?.task ? false : true} className={`bg-gray-300 mt-2 p-2  rounded-lg w-20 hover:bg-slate-500 hover:text-white hover:font-medium ${taskEdit?.task ? '' : 'disabled:cursor-not-allowed'}`} type="submit" value="Submit" />
+            
+            {
+                error && <div className="mt-2 bg-red-600 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div>
+            }
+            {
+                taskEdit._id && <div className='flex justify-center py-2'>
+                <form className='flex justify-center' onSubmit={handleSubmit}>
+                    <input defaultValue={taskEdit?.task} className='form-control w-60 mr-5 block px-3  py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none' type="text" name="task" id="task" />
+                    <input className='bg-gray-300 mt-2 p-2  rounded-lg w-20 hover:bg-slate-500 hover:text-white hover:font-medium' type="submit" value="Submit" />
+
                 </form>
             </div>
+            }
+
+            {
+                errorMessage && <p className='text-center text-red-600 text-lg font-bold'>Can't Submit Empty Field</p>
+            }
+
+            {
+                isLoading ? <div className="mt-2 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div> :
+            
             <div className="grid grid-cols-2 gap-5">
                 <div >
-                <p className='text-2xl font-semibold text-red-400 text-center'>Incompleted Task</p>
+                <p className='text-2xl font-semibold text-red-400 text-center'>In completed Task</p>
                     <div className='flex justify-center'> 
                         <div className="flex flex-col">
                             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -65,7 +86,7 @@ const To_Do_List = () => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    data?.data.map((task, i) => task.status ===1 ? '' : <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                    data?.data.map((task, i) => task.status !==1 && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
                                                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                         <input onClick={()=>handelChecked(task._id)} type="checkbox" name="complete" id="complete" />
@@ -106,7 +127,7 @@ const To_Do_List = () => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    data?.data.map((task, i) => task.status !==1 ? '' : <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                    data?.data.map((task, i) => task.status === 1 && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
                                                     
                                                     <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
@@ -123,6 +144,7 @@ const To_Do_List = () => {
                     </div>
                 </div>
             </div>
+            }
         </div>
     );
 };

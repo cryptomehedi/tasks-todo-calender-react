@@ -3,7 +3,7 @@ import Calender from "./Components/TodoCal/Calender";
 import Footer from "./Components/Footer";
 import Nav from "./Components/Shared/Nav";
 import Tasks from "./Components/TodoCal/Tasks";
-import To_Do_List from "./Components/TodoCal/To_Do_List";
+import ToDoList from "./Components/TodoCal/ToDoList";
 import Login from './Components/LoginRed/Login';
 import Reg from './Components/LoginRed/Reg';
 import Welcome from "./Components/Welcome";
@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="*" element={<NotFound/>} />
         <Route path="/" element={<Tasks/>} />
-        <Route path="/todo" element={<To_Do_List/>} />
+        <Route path="/todo" element={<ToDoList/>} />
         <Route path="/cal" element={<Calender/>} />
         <Route path='/registration' element={<Reg/>} />
         <Route path='/login' element={<Login/>} />
