@@ -7,7 +7,7 @@ const Tasks = () => {
         e.preventDefault();
         const task = e.target.task.value 
         if(task.length > 0) {
-            await axios.post('https://todotasklistapi.herokuapp.com/task', {task})
+            await axios.post('https://tasks-todo-calender.vercel.app/task', {task})
             .then(data => {
                 if (data.status === 200) {
                     e.target.reset()

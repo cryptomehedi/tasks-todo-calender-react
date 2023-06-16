@@ -1,18 +1,30 @@
 import { Route, Routes } from "react-router-dom";
-import Calender from "./Components/Calender";
+import Calender from "./Components/TodoCal/Calender";
 import Footer from "./Components/Footer";
-import Nav from "./Components/Nav";
-import Tasks from "./Components/Tasks";
-import To_Do_List from "./Components/To_Do_List";
+import Nav from "./Components/Shared/Nav";
+import Tasks from "./Components/TodoCal/Tasks";
+import To_Do_List from "./Components/TodoCal/To_Do_List";
+import Login from './Components/LoginRed/Login';
+import Reg from './Components/LoginRed/Reg';
+import Welcome from "./Components/Welcome";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "./firebase.init";
 
 function App() {
+  const [user] = useAuthState(auth)
+
   return (
     <div>
       <Nav/>
+      {
+        user ? <Welcome/> : <></>
+      }
       <Routes>
         <Route path="/" element={<Tasks/>} />
         <Route path="/todo" element={<To_Do_List/>} />
         <Route path="/cal" element={<Calender/>} />
+        <Route path='/registration' element={<Reg/>} />
+        <Route path='/login' element={<Login/>} />
       </Routes>
       <Footer/>
     </div>

@@ -49,7 +49,7 @@ const Footer = () => {
                         Useful links
                         </h6>
                         <p className="mb-4">
-                        <a href="https://todotasklistapi.herokuapp.com" className="text-gray-600">Server</a>
+                        <a href="https://tasks-todo-calender.vercel.app" className="text-gray-600">Server</a>
                         </p>
                         <p className="mb-4">
                         <a href="https://github.com/cryptomehedi/tasks-todo-calender-react" className="text-gray-600">Git Link</a>

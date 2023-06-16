@@ -8,23 +8,23 @@ const To_Do_List = () => {
     // const [tasks, setTasks] = useState([])
     const [taskEdit, setTaskEdit] = useState({}) 
 
-    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://todotasklistapi.herokuapp.com/task'))
+    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://tasks-todo-calender.vercel.app/task'))
 
     //console.log(taskEdit);
     const handleSubmit = async e => {
         e.preventDefault()
         const id = taskEdit._id
-        const task = e.target.task.value
-        await axios.put(`https://todotasklistapi.herokuapp.com/task/${id}`, {task})
+        const task = e.target.task.value 
+        await axios.put(`https://tasks-todo-calender.vercel.app/task/${id}`, {task})
         e.target.reset()
-        setTaskEdit(null)
+        setTaskEdit('')
         refetch()
     }
 // console.log(checked);
 
     const handelChecked = async id =>{ 
         const status = 1
-        await axios.put(`https://todotasklistapi.herokuapp.com/taskComplete/${id}`, {status})
+        await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
         .then(data=> console.log(data))
         refetch()
     }
