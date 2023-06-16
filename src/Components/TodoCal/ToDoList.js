@@ -3,14 +3,18 @@ import React, { useState } from 'react';
 import { PencilAltIcon, TrashIcon } from '@heroicons/react/solid'
 import { useQuery } from 'react-query'
 import Spinner from '../Shared/Spinner';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
 
 const To_Do_List = () => {
 
     // const [tasks, setTasks] = useState([])
     const [taskEdit, setTaskEdit] = useState({}) 
     const [errorMessage, setErrorMessage] = useState(false) 
-
-    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://tasks-todo-calender.vercel.app/task'))
+    const [user] = useAuthState(auth)
+    // console.log(email);
+    // const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://tasks-todo-calender.vercel.app/task', {email}))
+    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get(`https://tasks-todo-calender.vercel.app/task?user=${user.email}`))
 
     //console.log(taskEdit);
     const handleSubmit = async e => {
@@ -30,9 +34,15 @@ const To_Do_List = () => {
     }
 
     const handelChecked = async id =>{ 
-        const status = 1
+        const status = true
         await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
-        .then(data=> console.log(data))
+        .then(data=> data)
+        refetch()
+    }
+
+    const handleDelete = async id =>{
+        await axios.delete(`https://tasks-todo-calender.vercel.app/taskdelete/${id}`)
+        .then(data=> data)
         refetch()
     }
 
@@ -86,7 +96,7 @@ const To_Do_List = () => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    data?.data.map((task, i) => task.status !==1 && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                    data?.data.map((task, i) => task.status !== true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
                                                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                         <input onClick={()=>handelChecked(task._id)} type="checkbox" name="complete" id="complete" />
@@ -130,14 +140,14 @@ const To_Do_List = () => {
                                             </thead>
                                             <tbody>
                                                 {
-                                                    data?.data.map((task, i) => task.status === 1 && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                                    data?.data.map((task, i) => task.status === true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
                                                     
                                                     <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
                                                         {task.task}
                                                     </td> 
                                                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        <TrashIcon onClick={()=>setTaskEdit(task)} className="h-5 w-5 text-red-300 hover:text-red-500"/>
+                                                        <TrashIcon onClick={()=>handleDelete(task._id)} className="h-5 w-5 text-red-300 hover:text-red-500"/>
                                                     </td>
                                                 </tr>)
                                                 }

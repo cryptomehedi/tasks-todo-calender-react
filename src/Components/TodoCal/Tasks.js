@@ -1,15 +1,20 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import Spinner from '../Shared/Spinner';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../firebase.init';
 
 const Tasks = () => {
     const [loading, setLoading] = useState(null)
+    const [{email}] = useAuthState(auth)
+
     const handleSubmit = async e => {
         setLoading(1)
         e.preventDefault();
         const task = e.target.task.value 
         if(task.length > 0) {
-            await axios.post('https://tasks-todo-calender.vercel.app/task', {task})
+            // await axios.post('https://tasks-todo-calender.vercel.app/task', {task, email})
+            await axios.post('https://tasks-todo-calender.vercel.app/task', {task, email})
             .then(data => {
                 if (data.status === 200) {
                     setLoading(null)
