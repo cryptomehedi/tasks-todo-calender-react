@@ -8,7 +8,7 @@ const Welcome = () => {
 
     return (
         <div>
-            <h1 className='sm:text-center text-2xl mb-3'>Hello <span className='text-green-400 font-semibold'>{displayName}</span></h1>
+            <h1 className='text-center text-2xl mb-3'>Hello <span className='text-green-400 font-semibold'>{displayName}</span></h1>
         </div>
     );
 };

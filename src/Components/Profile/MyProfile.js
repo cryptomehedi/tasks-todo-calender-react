@@ -3,9 +3,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
 
 const MyProfile = () => {
-    const [user] = useAuthState(auth)
-    const {displayName,photoURL, email,metadata} = user
-    console.log(user);
+    const [{displayName,photoURL, email,metadata}] = useAuthState(auth)
+    
     return (
         <div>
             <div className='flex justify-center'>

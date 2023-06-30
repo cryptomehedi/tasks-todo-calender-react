@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import Spinner from '../Shared/Spinner';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
+import Welcome from '../Welcome';
 
 const Tasks = () => {
     const [loading, setLoading] = useState(null)
     const [{email}] = useAuthState(auth)
+    const [user] = useAuthState(auth)
 
     const handleSubmit = async e => {
         setLoading(1)
@@ -25,8 +27,13 @@ const Tasks = () => {
         setLoading(null)
     }
 
+    
+
     return (
         <div>
+            {
+                user ? <Welcome/> : <></>
+            }
             <div className="flex justify-center">
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="task" className="form-label inline-block mb-2 text-gray-700">Write a task here</label>

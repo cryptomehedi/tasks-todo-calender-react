@@ -62,7 +62,7 @@ const Login = () => {
     }
     
     if(user){
-        toast.success(`Welcome Back ${user.user.displayName} 😉`)
+        toast.success(`Welcome ${user.user.displayName} 😉`)
         navigate(from, { replace: true })
     }
     return (
@@ -83,7 +83,7 @@ const Login = () => {
                             {passErr && <p className='text-red-500 text-sm'>{passErr}</p>}
                         </div>
                         <p onClick={() => handlePasswordChange()} className="text-red-400 cursor-pointer">Forget Password??</p>
-                        <input className='bg-transparent text-black border-2 hover:bg-green-400 focus:outline-none focus:ring focus:ring-blue-300 active:bg-green-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-200 mt-3' type="submit" value="Sign In" />
+                        <div className='text-center md:text-left'><input className='bg-transparent text-black border-2 hover:bg-green-400 focus:outline-none focus:ring lg:w-full focus:ring-blue-300 active:bg-green-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-200 mt-3' type="submit" value="Sign In" /> </div>
                     </form>
                     {loading && <div className="mt-2"><Spinner text="Please Wait For Login Process...."/></div>}
                     {sending && <div className="mt-2"><Spinner text="Please Wait For Password Reset Process...."/></div>}

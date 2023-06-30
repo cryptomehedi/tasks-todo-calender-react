@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 import Spinner from '../Shared/Spinner';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init';
+import { toast } from 'react-toastify';
 
 const To_Do_List = () => {
 
@@ -25,6 +26,7 @@ const To_Do_List = () => {
             await axios.put(`https://tasks-todo-calender.vercel.app/task/${id}`, {task})
             e.target.reset()
             setTaskEdit('')
+            toast.success("Task Updated")
             refetch()
             setErrorMessage(false)
         } else {
@@ -37,12 +39,21 @@ const To_Do_List = () => {
         const status = true
         await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
         .then(data=> data)
+        toast.success("Task Completed")
+        refetch()
+    }
+    const handelUnChecked = async id =>{ 
+        const status = false
+        await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
+        .then(data=> data)
+        toast.success("Task Completed")
         refetch()
     }
 
     const handleDelete = async id =>{
         await axios.delete(`https://tasks-todo-calender.vercel.app/taskdelete/${id}`)
         .then(data=> data)
+        toast.warn("1 Item Deleted")
         refetch()
     }
 
@@ -69,7 +80,7 @@ const To_Do_List = () => {
             {
                 isLoading ? <div className="mt-2 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div> :
             
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid lg:grid-cols-2 gap-5">
                 <div >
                 <p className='text-2xl font-semibold text-red-400 text-center'>In completed Task</p>
                     <div className='flex justify-center'> 
@@ -99,7 +110,8 @@ const To_Do_List = () => {
                                                     data?.data.map((task, i) => task.status !== true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
                                                     <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                                        <input onClick={()=>handelChecked(task._id)} type="checkbox" name="complete" id="complete" />
+                                                        {/* <input onClick={()=>(task._id)} type="checkbox" name="complete" id="complete" /> */}
+                                                        <button onClick={()=>handelChecked(task._id)} className='bg-transparent text-green-500 border hover:bg-green-400 focus:outline-none focus:ring focus:ring-blue-300 active:bg-green-700 px-2 py-1 leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-500 mt-3'>Checked</button>
                                                     </td>
                                                     <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
                                                         {task.task}
@@ -129,6 +141,9 @@ const To_Do_List = () => {
                                                 <tr>
                                                     <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                                         #
+                                                    </th>
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                        Unchecked
                                                     </th> 
                                                     <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                                         Task
@@ -142,7 +157,10 @@ const To_Do_List = () => {
                                                 {
                                                     data?.data.map((task, i) => task.status === true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
-                                                    
+                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                        {/* <input type="checkbox" name="complete" id="complete" /> */}
+                                                        <button onClick={()=>handelUnChecked(task._id)} className='bg-transparent text-red-500 border hover:bg-red-400 focus:outline-none focus:ring focus:ring-blue-300 active:bg-red-700 px-2 py-1 leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-500 mt-3'>Unchecked</button>
+                                                    </td>
                                                     <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
                                                         {task.task}
                                                     </td> 

@@ -16,7 +16,7 @@ const SocialLogin = () => {
     }
 
     if(user){
-        toast.success(`Welcome Back ${user.user.displayName} 😉`)
+        toast.success(`Welcome ${user.user.displayName} 😉`)
         navigate(from, { replace: true })
     }
     return (
