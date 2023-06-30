@@ -9,15 +9,12 @@ import { toast } from 'react-toastify';
 
 const To_Do_List = () => {
 
-    // const [tasks, setTasks] = useState([])
     const [taskEdit, setTaskEdit] = useState({}) 
-    const [errorMessage, setErrorMessage] = useState(false) 
+    const [errorMessage, setErrorMessage] = useState(false)
     const [user] = useAuthState(auth)
-    // console.log(email);
-    // const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get('https://tasks-todo-calender.vercel.app/task', {email}))
     const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get(`https://tasks-todo-calender.vercel.app/task?user=${user.email}`))
+    // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
 
-    //console.log(taskEdit);
     const handleSubmit = async e => {
         e.preventDefault()
         const id = taskEdit._id
@@ -35,25 +32,28 @@ const To_Do_List = () => {
         
     }
 
-    const handelChecked = async id =>{ 
+    const handelChecked = async id =>{
+        const ids = toast.loading("Please wait...")
         const status = true
         await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
         .then(data=> data)
-        toast.success("Task Completed")
+        toast.update(ids, { render: "Task Completed", type: "success", autoClose: 3000, isLoading: false });
         refetch()
     }
-    const handelUnChecked = async id =>{ 
+    const handelUnChecked = async id =>{
+        const ids = toast.loading("Please wait...")
         const status = false
         await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
         .then(data=> data)
-        toast.success("Task Completed")
+        toast.update(ids, { render: "Task Unchecked", type: "info", autoClose: 3000, isLoading: false });
         refetch()
     }
 
     const handleDelete = async id =>{
+        const ids = toast.loading("Please wait...")
         await axios.delete(`https://tasks-todo-calender.vercel.app/taskdelete/${id}`)
         .then(data=> data)
-        toast.warn("1 Item Deleted")
+        toast.update(ids, { render: "Task Deleted", type: "error", autoClose: 3000, isLoading: false });
         refetch()
     }
 
@@ -61,13 +61,13 @@ const To_Do_List = () => {
         <div className=''>
             
             {
-                error && <div className="mt-2 bg-red-600 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div>
+                error && <div className="mt-2 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div>
             }
             {
-                taskEdit._id && <div className='flex justify-center py-2'>
+                taskEdit._id && <div className='flex justify-center p-2'>
                 <form className='flex justify-center' onSubmit={handleSubmit}>
                     <input defaultValue={taskEdit?.task} className='form-control w-60 mr-5 block px-3  py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none' type="text" name="task" id="task" />
-                    <input className='bg-gray-300 mt-2 p-2  rounded-lg w-20 hover:bg-slate-500 hover:text-white hover:font-medium' type="submit" value="Submit" />
+                    <input className='bg-gray-300 mt-2 p-2 cursor-pointer rounded-lg w-20 hover:bg-slate-500 hover:text-white hover:font-medium' type="submit" value="Submit" />
 
                 </form>
             </div>
@@ -78,29 +78,29 @@ const To_Do_List = () => {
             }
 
             {
-                isLoading ? <div className="mt-2 text-center"><Spinner text="Please Wait Your Submit is Processing...."/></div> :
+                isLoading ? <div className="mt-2 text-center"><Spinner text="Please Wait Your Task is Loading...."/></div> :
             
             <div className="grid lg:grid-cols-2 gap-5">
-                <div >
-                <p className='text-2xl font-semibold text-red-400 text-center'>In completed Task</p>
+                <div className='' >
+                    <p className='text-2xl font-semibold text-red-400 text-center'>In completed Task</p>
                     <div className='flex justify-center'> 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col" >
                             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                                     <div className="overflow-hidden">
-                                        <table className="min-w-full">
+                                        <table className="min-w-full ">
                                             <thead className="bg-white border-b">
                                                 <tr>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         #
                                                     </th>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Checked
                                                     </th>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Task
                                                     </th>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Edit
                                                     </th>
                                                 </tr>
@@ -108,15 +108,15 @@ const To_Do_List = () => {
                                             <tbody>
                                                 {
                                                     data?.data.map((task, i) => task.status !== true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    <td className="px-2 lg:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
+                                                    <td className="text-sm text-gray-900 font-light px-2 lg:px-6 py-4 whitespace-nowrap">
                                                         {/* <input onClick={()=>(task._id)} type="checkbox" name="complete" id="complete" /> */}
                                                         <button onClick={()=>handelChecked(task._id)} className='bg-transparent text-green-500 border hover:bg-green-400 focus:outline-none focus:ring focus:ring-blue-300 active:bg-green-700 px-2 py-1 leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-500 mt-3'>Checked</button>
                                                     </td>
-                                                    <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
+                                                    <td className=" text-gray-900 px-2 lg:px-6 py-4 w-2 whitespace-normal">
                                                         {task.task}
                                                     </td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    <td className="text-sm text-gray-900 font-light px-2 lg:px-6 py-4 whitespace-nowrap">
                                                         <PencilAltIcon onClick={()=>setTaskEdit(task)} className="h-5 w-5 text-green-300 hover:text-green-500"/>
                                                     </td>
                                                 </tr>)
@@ -131,24 +131,24 @@ const To_Do_List = () => {
                 </div>
                 <div>
                     <p className='text-2xl font-semibold text-green-400 text-center'>Completed Task</p>
-                    <div className='flex justify-center'> 
+                    <div className='flex justify-center '> 
                         <div className="flex flex-col">
-                            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                            <div className="overflow-x-auto  sm:-mx-6 lg:-mx-8">
+                                <div className="py-2 inline-block min-w-full sm:px-5 lg:px-8">
                                     <div className="overflow-hidden">
                                         <table className="min-w-full">
                                             <thead className="bg-white border-b">
                                                 <tr>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         #
                                                     </th>
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Unchecked
                                                     </th> 
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Task
                                                     </th> 
-                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                                    <th scope="col" className="text-sm font-medium text-gray-900 px-2 lg:px-6 py-4 text-left">
                                                         Delete
                                                     </th> 
                                                 </tr>
@@ -156,15 +156,15 @@ const To_Do_List = () => {
                                             <tbody>
                                                 {
                                                     data?.data.map((task, i) => task.status === true && <tr key={i} className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    <td className="px-2 lg:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{i+1}</td>
+                                                    <td className="text-sm text-gray-900 font-light px-2 lg:px-6 py-4 whitespace-nowrap">
                                                         {/* <input type="checkbox" name="complete" id="complete" /> */}
                                                         <button onClick={()=>handelUnChecked(task._id)} className='bg-transparent text-red-500 border hover:bg-red-400 focus:outline-none focus:ring focus:ring-blue-300 active:bg-red-700 px-2 py-1 leading-5 rounded-full font-semibold hover:text-white cursor-pointer duration-500 mt-3'>Unchecked</button>
                                                     </td>
-                                                    <td className=" text-gray-900 px-6 py-4 whitespace-nowrap">
+                                                    <td className=" text-gray-900 px-2 lg:px-6 py-4 w-2 whitespace-normal">
                                                         {task.task}
                                                     </td> 
-                                                    <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                                    <td className="text-sm text-gray-900 font-light px-2 lg:px-6 py-4 whitespace-nowrap">
                                                         <TrashIcon onClick={()=>handleDelete(task._id)} className="h-5 w-5 text-red-300 hover:text-red-500"/>
                                                     </td>
                                                 </tr>)
