@@ -49,7 +49,7 @@ const Footer = () => {
                         Useful links
                         </h6>
                         <p className="mb-4">
-                        <a href="https://tasks-todo-calender.vercel.app" className="text-gray-600">Server running</a>
+                        <a href="https://tasks-todo-calender-modern-server.vercel.app/api/task" className="text-gray-600">Server running</a>
                         </p>
                         <p className="mb-4">
                         <a href="https://github.com/cryptomehedi/tasks-todo-calender-react-server" className="text-gray-600">Git Server link</a>

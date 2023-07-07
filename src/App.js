@@ -11,6 +11,7 @@ import NotFound from "./Components/Shared/NotFound";
 import UseAuth from "./Components/Shared/UseAuth";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import WeatherMainPage from "./Components/Weather/WeatherMainPage";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/registration' element={<Reg/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/profile' element={<UseAuth><MyProfile/></UseAuth>} />
+        <Route path='/weather' element={<WeatherMainPage/>} />
       </Routes>
       <Footer/>
       <ToastContainer/>

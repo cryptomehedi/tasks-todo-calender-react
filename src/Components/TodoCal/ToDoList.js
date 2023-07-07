@@ -12,7 +12,7 @@ const To_Do_List = () => {
     const [taskEdit, setTaskEdit] = useState({}) 
     const [errorMessage, setErrorMessage] = useState(false)
     const [user] = useAuthState(auth)
-    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get(`https://tasks-todo-calender.vercel.app/task?user=${user.email}`))
+    const {data, isLoading, error, refetch} = useQuery('task', ()=> axios.get(`https://tasks-todo-calender-modern-server.vercel.app/api/task?user=${user.email}`))
     // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
 
     const handleSubmit = async e => {
@@ -20,7 +20,7 @@ const To_Do_List = () => {
         const id = taskEdit._id
         const task = e.target.task.value 
         if(task.length > 0) {
-            await axios.put(`https://tasks-todo-calender.vercel.app/task/${id}`, {task})
+            await axios.put(`https://tasks-todo-calender-modern-server.vercel.app/api/task/${id}`, {task})
             e.target.reset()
             setTaskEdit('')
             toast.success("Task Updated")
@@ -35,7 +35,8 @@ const To_Do_List = () => {
     const handelChecked = async id =>{
         const ids = toast.loading("Please wait...")
         const status = true
-        await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
+        await axios.put(`https://tasks-todo-calender-modern-server.vercel.app/api/task/taskComplete/${id}`, {status})
+        // await axios.put(`http://localhost:4000/api/task/taskComplete/${id}`, {status})
         .then(data=> data)
         toast.update(ids, { render: "Task Completed", type: "success", autoClose: 3000, isLoading: false });
         refetch()
@@ -43,7 +44,7 @@ const To_Do_List = () => {
     const handelUnChecked = async id =>{
         const ids = toast.loading("Please wait...")
         const status = false
-        await axios.put(`https://tasks-todo-calender.vercel.app/taskComplete/${id}`, {status})
+        await axios.put(`https://tasks-todo-calender-modern-server.vercel.app/api/task/taskComplete/${id}`, {status})
         .then(data=> data)
         toast.update(ids, { render: "Task Unchecked", type: "info", autoClose: 3000, isLoading: false });
         refetch()
@@ -51,7 +52,7 @@ const To_Do_List = () => {
 
     const handleDelete = async id =>{
         const ids = toast.loading("Please wait...")
-        await axios.delete(`https://tasks-todo-calender.vercel.app/taskdelete/${id}`)
+        await axios.delete(`https://tasks-todo-calender-modern-server.vercel.app/api/task/${id}`)
         .then(data=> data)
         toast.update(ids, { render: "Task Deleted", type: "error", autoClose: 3000, isLoading: false });
         refetch()

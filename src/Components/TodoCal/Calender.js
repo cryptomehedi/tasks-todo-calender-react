@@ -68,7 +68,7 @@ const Calender = () => {
     useEffect(()=>{
         function fridaysInMonth() {
             let days = new Date( currentYear,currentMonth,0 ).getDate();
-            let fridays = [ 3 - (new Date( currentMonth +'/01/'+ currentYear ).getDay()) ];
+            let fridays = [ 4 - (new Date( currentMonth +'/01/'+ currentYear ).getDay()) ];
             for ( let i = fridays[0] + 7; i < days; i += 7 ) {
                 fridays.push( i );
             }
@@ -80,7 +80,7 @@ const Calender = () => {
         }
         function saturdaysInMonth() {
             let days = new Date( currentYear,currentMonth,0 ).getDate();
-            let saturdays = [ 4 - (new Date( currentMonth +'/01/'+ currentYear ).getDay()) ];
+            let saturdays = [ 5 - (new Date( currentMonth +'/01/'+ currentYear ).getDay()) ];
             for ( let i = saturdays[0] + 7; i < days; i += 7 ) {
                 saturdays.push( i );
             }

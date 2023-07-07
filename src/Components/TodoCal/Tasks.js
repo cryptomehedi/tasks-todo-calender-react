@@ -16,7 +16,7 @@ const Tasks = () => {
         e.preventDefault();
         const task = e.target.task.value 
         if(task.length > 0) {
-            await axios.post('https://tasks-todo-calender.vercel.app/task', {task, email})
+            await axios.post('https://tasks-todo-calender-modern-server.vercel.app/api/task', {task, email})
             .then(data => {
                 if (data.status === 200) {
                     setLoading(null)
