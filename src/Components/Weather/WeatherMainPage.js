@@ -6,6 +6,7 @@ const WeatherMainPage = () => {
 
     return (
         <div>
+            
             {
                 <WeatherForecast/>
             }

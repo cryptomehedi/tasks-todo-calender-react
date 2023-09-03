@@ -23,7 +23,7 @@ function App() {
         <Route path="*" element={<NotFound/>} />
         <Route path="/" element={<UseAuth><Tasks/></UseAuth>} />
         <Route path="/todo" element={<UseAuth><ToDoList/></UseAuth>} />
-        <Route path="/cal" element={<Calender/>} />
+        <Route path="/calender" element={<Calender/>} />
         <Route path='/registration' element={<Reg/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/profile' element={<UseAuth><MyProfile/></UseAuth>} />

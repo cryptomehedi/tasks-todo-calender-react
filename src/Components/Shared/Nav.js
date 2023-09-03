@@ -13,7 +13,7 @@ const Nav = () => {
             <div className="flex justify-center mt-2">
                 <Link to='/' className='mx-2 p-2 duration-150 hover:bg-green-400 rounded-xl hover:text-white'>Task</Link>
                 <Link to='/todo' className='mx-2 p-2 duration-150 hover:bg-green-400 rounded-xl hover:text-white'>ToDo List</Link>
-                <Link to='/cal' className='mx-2 p-2 duration-150 hover:bg-green-400 rounded-xl hover:text-white'>Calender</Link>
+                <Link to='/calender' className='mx-2 p-2 duration-150 hover:bg-green-400 rounded-xl hover:text-white'>Calender</Link>
                 {
                     user ? <div className="dropdown inline-block relative hover:bg-gray-200 rounded-t-xl">
                                 <button className="hover:bg-green-400 hover:text-white  rounded-xl font-semibold py-2 px-4 inline-flex items-center">
